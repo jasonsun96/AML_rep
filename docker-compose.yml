@@ -1,0 +1,11 @@
+services:
+  notebook:
+    build: .
+    container_name: aml-notebook
+    ports:
+      - "8888:8888"   # JupyterLab
+      - "4040:4040"   # Spark web UI (visit http://localhost:4040 while a SparkSession is active)
+    volumes:
+      # Mount your repo into the container so edits in Jupyter persist on the host.
+      - .:/workspace
+    working_dir: /workspace
