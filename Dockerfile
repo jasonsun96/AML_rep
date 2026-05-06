@@ -7,18 +7,19 @@ ENV PIP_NO_CACHE_DIR=1 \
     PYTHONDONTWRITEBYTECODE=1
 
 # System libs:
-#   build-essential        — for any pip wheels that need to compile from source
-#   openjdk-17-jre-headless — required by PySpark (Spark runs on the JVM)
+#   build-essential        — for any pip wheels that compile from source
+#   openjdk-21-jre-headless — required by PySpark (Spark runs on the JVM).
+#                            Java 17 was dropped from Debian Trixie; Spark 3.5+ supports Java 21.
 #   procps                 — `ps` is used by some Spark scripts
 RUN apt-get update && apt-get install -y --no-install-recommends \
         build-essential \
-        openjdk-17-jre-headless \
+        openjdk-21-jre-headless \
         procps \
     && rm -rf /var/lib/apt/lists/*
 
 # Spark needs JAVA_HOME pointing at the JRE.
-ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 \
-    PATH="/usr/lib/jvm/java-17-openjdk-amd64/bin:${PATH}"
+ENV JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64 \
+    PATH="/usr/lib/jvm/java-21-openjdk-amd64/bin:${PATH}"
 
 WORKDIR /workspace
 
